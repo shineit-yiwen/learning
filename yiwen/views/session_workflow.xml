@@ -1,0 +1,91 @@
+<openerp>
+    <data>
+        <record model="workflow" id="wkf_session">
+            <field name="name">yiwen sessions workflow</field>
+            <field name="osv">yiwen.session</field>
+            <field name="on_create">True</field>
+        </record>
+
+        <record model="workflow.activity" id="draft">
+            <field name="name">Draft</field>
+            <field name="wkf_id" ref="wkf_session"/>
+            <field name="flow_start" eval="True"/>
+            <field name="kind">function</field>
+            <field name="action">action_draft()</field>
+        </record>
+
+
+        <record model="workflow.activity" id="confirmed">
+            <field name="name">Confirmed</field>
+            <field name="wkf_id" ref="wkf_session"/>
+            <field name="kind">function</field>
+            <!-- action_draft()是一个函数名，在model里必有对应的函数 -->
+            <field name="action">action_confirm()</field>
+        </record>
+
+        <record model="workflow.activity" id="done">
+            <field name="name">Done</field>
+            <field name="wkf_id" ref="wkf_session"/>
+            <field name="kind">function</field>
+            <field name="action">action_done()</field>
+        </record>
+
+<!-- unconfirmed节点————用来判断seats<50时，点击confirm按钮时直接进入此节点 -->
+        <record model="workflow.activity" id="unconfirmed">
+            <field name="name">Unconfirmed</field>
+            <field name="wkf_id" ref="wkf_session"/>
+            <field name="kind">function</field>
+            <field name="action">action_unconfirm()</field>
+        </record>
+
+        <record model="workflow.transition" id="session_draft_to_confirmed">
+            <field name="act_from" ref="draft"/>
+            <field name="act_to" ref="confirmed"/>
+            <!-- signal为button点击所产生的信号，所以signal后面为按钮的名称，即动作触发条件 -->
+            <field name="signal">button_confirm</field>
+            <field name="condition">seats &gt; 50</field>
+            <!-- <field name="condition">taken_seats</field> -->
+        </record>
+
+        <record model="workflow.transition" id="session_confirmed_to_draft">
+            <field name="act_from" ref="confirmed"/>
+            <field name="act_to" ref="draft"/>
+            <field name="signal">button_draft</field>
+        </record>
+        <record model="workflow.transition" id="session_done_to_draft">
+            <field name="act_from" ref="done"/>
+            <field name="act_to" ref="draft"/>
+            <field name="signal">button_draft</field>
+        </record>
+
+
+
+        <record model="workflow.transition" id="session_draft_to_unconfirmed">
+            <field name="act_from" ref="draft"/>
+            <field name="act_to" ref="unconfirmed"/>
+            <field name="condition">seats &lt; 50</field>
+            <field name="signal">button_confirm</field>
+        </record>
+<!-- condition为True表示让线程从unconfirmed节点直接返回draft节点，即不需要signal(动作触发) -->
+        <record model="workflow.transition" id="session_unconfirmed_to_draft">
+            <field name="act_from" ref="unconfirmed"/>
+            <field name="act_to" ref="draft"/>
+            <field name="condition">True</field>
+        </record>
+
+
+
+
+        <record model="workflow.transition" id="session_confirmed_to_done">
+            <field name="act_from" ref="confirmed"/>
+            <field name="act_to" ref="done"/>
+            <field name="signal">button_done</field>
+        </record>
+
+   <!--      <record model="workflow.transition" id="session_auto_confirm_half_filled">
+            <field name="act_from" ref="draft"/>
+            <field name="act_to" ref="confirmed"/>
+            <field name="condition">seats &gt; 50</field>
+        </record> -->
+    </data>
+</openerp>

@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+     <!-- course视图 -->
+         <record model="ir.ui.view" id="course_form_view">
+            <field name="name">course.form</field>
+            <field name="model">yiwen.course</field>
+            <field name="arch" type="xml">
+                <form string="Course Form">
+				<header>
+<!--     				<button name="do_toggle_done" type="object"
+    				 string="Status button" class="oe_highlight"></button>
+    				 <field name="state" widget="statusbar" statusbar_visible="draft,confirm">
+    				 	
+    				 </field> -->
+    				 <button name="action_draft" type="object"
+                                string="Reset to draft"
+                                states="confirmed,done"/>
+                    <button name="action_confirm" type="object"
+                                string="Confirm" states="draft"
+                                class="oe_highlight"/>
+                    <button name="action_done" type="object"
+                                string="Mark as done" states="confirmed"
+                                class="oe_highlight"/>
+                    <field name="state" widget="statusbar"/>
+                    </header>
+                <!-- div：定义文章中的节或者区域 -->
+            	<div class="header">
+            		<div class="row">  
+        				<div class='text-center' style="color:#808080">
+                          <!--span:定义文档中的行内的小块或区域  -->
+            			<span>上海先安科技有限公司</span>  
+        				</div>  
+    				</div>  
+    					<div class="row zero_min_height">
+                          <!--style:定义样式定义  -->
+        				<div style="border-bottom: 1px solid black;"></div>  
+    				</div>  
+				</div> 
+
+                    <sheet>
+                       <group>
+                       		<separator string="Dates" colspan="4"></separator>
+                            <field name="product_image" widget="image" class="oe_avatar"></field>
+                            <field name="name"></field> 
+                            <field name="description" placeholder=" Plese write description"></field>
+                            <field name="responsible_id"></field>
+                        </group>
+                        <notebook>
+                        	<page string="Main">
+                        		<field name="main"></field>	
+                        	</page>
+                        	<page string="Style">
+                        		<field name="style"></field>	
+                        	</page>
+                        </notebook>
+                    </sheet>
+                </form> 
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="course_tree_view">
+        	<field name="name">course.tree</field>
+        	<field name="model">yiwen.course</field>
+        	<field name="arch" type="xml">
+        		<tree string="Course Tree">
+        			<field name="name"></field>
+        			<field name="responsible_id"></field>
+        			<field name="session_ids"></field>
+        		</tree>
+        	</field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="course_list_action">
+            <field name="name">Course</field>
+            <field name="res_model">yiwen.course</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem  id="main_yiwen_menu" name="Course Management"></menuitem>
+        <menuitem id="yiwen_menu" 
+                    name="Course Management"  
+                    parent="main_yiwen_menu"></menuitem>
+        <menuitem id="courses_menu" 
+                    name="Courses" 
+                    parent="yiwen_menu" action="course_list_action">
+        </menuitem>
+
+
+
+
+<!-- school视图 -->
+         <record model="ir.ui.view" id="school_search_view">
+        	<!-- <field name="name">school.search</field> -->
+        	<field name="model">yiwen.school</field>
+        	<field name="arch" type="xml">
+				<search string="School search">
+					<group>
+		        		<field name="name"></field>
+		        		<field name="description"></field>
+		        	</group>
+		        </search>
+        	</field>
+        </record>
+
+          <record model="ir.ui.view" id="school_form_view">
+        	<field name="name">school.form</field>
+        	<field name="model">yiwen.school</field>
+        	<field name="arch" type="xml">
+				<form string="School form">
+					<sheet>
+						<group>
+		        			<field name="name"></field>
+		        			<!-- <field name="attendee_ids"></field> -->
+		        			<field name="telephone"></field>
+		        			<field name="address"></field>
+		        			<field name="new_password" password="True"></field>
+		        		</group>
+		        		<group>
+		        			<field name="description"></field>
+		        		</group>
+		        	</sheet>
+		        </form>
+        	</field>
+        </record>        
+
+        <record model="ir.actions.act_window" id="school_list_action">
+            <field name="name">School</field>
+            <field name="res_model">yiwen.school</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="search_view_id" ref="school_search_view"></field>
+        </record>
+
+ <!-- 继承res.partner并在其上面添加一个school_id字段 -->
+        <record model="ir.ui.view" id="parent_form_view_inherited">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"></field>
+            <field name="arch" type="xml">
+                <field name="phone" position="after">
+                    <field name="school_id"></field>
+                </field>
+                
+            </field>  
+        </record>
+
+        <menuitem id="school_menu" name="School"
+                   parent="yiwen_menu"
+                   action="school_list_action">
+        </menuitem>
+
+     <!-- session视图 -->
+        <record model="ir.ui.view" id="session_form_view">
+            <field name="name">session.form</field>
+            <field name="model">yiwen.session</field>
+            <field name="arch" type="xml"> 
+                <form string="Session Form">
+
+                	<!-- session工作流 -->
+                	<header>
+                		<!-- states为状态：例如：states="confirmed,done————只有当视图处于confirmed或done时按钮才显示 -->
+                        <button name="button_draft" type="workflow"
+                                string="Reset to draft"
+                                states="confirmed,done"/>
+                        <button name="button_confirm" type="workflow"
+                                string="Confirm" states="draft"
+                                ss="oe_highlight"/>
+                        <button name="button_done" type="workflow"
+                                string="Mark as done" states="confirmed"
+                                class="oe_highlight"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+
+
+                    <sheet>
+                        <group>
+                            <field name="name"></field>
+                            <field name="start_date"></field>
+                            <field name="end_date"></field>
+                            <field name="duration"></field>
+                            <field name="seats"></field>
+                            <field name="school_id" invisible="True"></field>
+                            <!-- <field name="taken_seats" widget="progressbar"></field> -->
+                            <field name="course_id"></field>
+                            <field name="instructor_id"></field>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                             <field name="attendee_ids" domain="[('school_id', '=',school_id)]"></field>
+                        </group>
+                    </sheet>
+                </form> 
+            </field>
+        </record>
+
+<!-- 表单视图 -->
+        <record model="ir.ui.view" id="session_tree_view">
+            <field name="name">session.form</field>
+            <field name="model">yiwen.session</field>
+            <field name="arch" type="xml">
+                <tree string="Session Form">
+                    <field name="name"></field>
+                    <field name="seats" string="Number of Seats"></field>
+                    <field name="num_attendee" string="Number of Attendee"/>
+                </tree>
+            </field>
+        </record>
+<!-- 日历视图 -->
+        <record model="ir.ui.view" id="session_calendar_view">
+        	<field name="name">session.calendar</field>
+        	<field name="model">yiwen.session</field>
+        	<field name="arch" type="xml">
+        		<calendar string="Session Calendar" date_start="start_date"
+        			 date_stop="end_date"
+        			 color="instructor_id">
+        			 <field name="name"></field>	
+        		</calendar>
+        	</field>
+        </record>
+
+<!-- 甘特视图 -->
+  <!--       <record model="ir.ui.view" id="session_gantt_view">
+        	<field name="name">session.gantt</field>
+        	<field name="model">yiwen.session</field>
+        	<field name="arch" type="xml">
+        		<gantt string="Session Gantt" color="course_id"
+        			 date_start="start_date" date_delay="hours"
+        			 default_group_by="instructor_id">
+        			 <field name="name"></field>
+        		</gantt>
+        	</field>
+        	
+        </record> -->
+
+        <record model="ir.ui.view" id="yiwen_session_graph_view">
+        	<field name="name">yiwen.session.graph</field>
+			<field name="model">yiwen.session</field>
+			<field name="arch" type="xml">
+				<graph string="Participations by Courses">
+					<field name="course_id"></field>
+					<field name="attendees_count" type="measure"></field>
+					<!-- <field name="taken_seats" widget="progressbar"/> -->
+				</graph>
+			</field>        	
+        </record>
+
+
+        <record model="ir.actions.act_window" id="session_list_action">
+            <field name="name">Sessions</field>
+            <field name="res_model">yiwen.session</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,gantt,graph</field>    
+        </record>
+
+        <menuitem id="session_menu" name="Sessions"
+                   parent="yiwen_menu"
+                   action="session_list_action">
+        </menuitem> 
+
+<!-- wizard视图 -->
+        <record model="ir.ui.view" id="wizard_form_view">
+            <field name="name">wizard.form</field>
+            <field name="model">yiwen.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Add Attendees">
+                    <group>
+                        <field name="session_id"/>
+                        <field name="attendee_ids"/>
+                    </group>
+                    <footer>
+                    	<button name="subscribe" type="object"
+                    		 string="Subscribe" class="oe_highlight">
+                    	</button>
+                    	<button name="cancel" string="Cancel"></button>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="launch_session_wizard"
+                    name="Add Attendees"
+                    src_model="yiwen.session"
+                    res_model="yiwen.wizard"
+                    view_mode="form"
+                    target="new"
+                    key2="client_action_multi"
+                    />
+
+
+
+    </data>
+</openerp>

@@ -1,0 +1,47 @@
+<openerp>
+  <data>
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="yiwen.list">
+      <field name="name">yiwen list</field>
+      <field name="model">yiwen.yiwen</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="yiwen.action_window">
+      <field name="name">yiwen window</field>
+      <field name="res_model">yiwen.yiwen</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- server action to the one above -->
+    <record model="ir.actions.server" id="yiwen.action_server">
+      <field name="name">yiwen server</field>
+      <field name="model_id" ref="model_yiwen_yiwen"/>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+
+    <!-- Top menu item -->
+    <menuitem name="yiwen" id="yiwen.menu_root"/>
+    <!-- menu categories -->
+    <menuitem name="Menu 1" id="yiwen.menu_1" parent="yiwen.menu_root"/>
+    <menuitem name="Menu 2" id="yiwen.menu_2" parent="yiwen.menu_root"/>
+    -->
+    <!-- actions -->
+    <menuitem name="List" id="yiwen.menu_1_list" parent="yiwen.menu_1"
+              action="yiwen.action_window"/>
+    <menuitem name="Server to list" id="yiwen" parent="yiwen.menu_2"
+              action="yiwen.action_server"/>
+  </data>
+</openerp>
