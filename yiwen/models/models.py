@@ -44,10 +44,11 @@ class Course(models.Model):
 		self.state = 'done'
 
 class material(models.Model):
-	_name="material"
-	material=fields.Text(string=" 主")
-	inside=fields.Char()
-	details=fields.Many2one("sample.list")
+	_name = "material"
+	material = fields.Text(string=" 主")
+	inside = fields.Char()
+	parts = fields.Char()
+	details = fields.Many2one("sample.list")
 
 class School(models.Model):
 	_name = 'yiwen.school'
