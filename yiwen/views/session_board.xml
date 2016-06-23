@@ -56,7 +56,6 @@
           <field name="usage">menu</field>
           <field name="view_id" ref="board_session_form"/>
         </record>
-
         <menuitem
             name="Session Dashboard" parent="base.menu_reporting_dashboard"
             action="open_board_session"

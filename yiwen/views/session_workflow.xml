@@ -13,8 +13,6 @@
             <field name="kind">function</field>
             <field name="action">action_draft()</field>
         </record>
-
-
         <record model="workflow.activity" id="confirmed">
             <field name="name">Confirmed</field>
             <field name="wkf_id" ref="wkf_session"/>
@@ -58,8 +56,6 @@
             <field name="signal">button_draft</field>
         </record>
 
-
-
         <record model="workflow.transition" id="session_draft_to_unconfirmed">
             <field name="act_from" ref="draft"/>
             <field name="act_to" ref="unconfirmed"/>
@@ -73,19 +69,10 @@
             <field name="condition">True</field>
         </record>
 
-
-
-
         <record model="workflow.transition" id="session_confirmed_to_done">
             <field name="act_from" ref="confirmed"/>
             <field name="act_to" ref="done"/>
             <field name="signal">button_done</field>
         </record>
-
-   <!--      <record model="workflow.transition" id="session_auto_confirm_half_filled">
-            <field name="act_from" ref="draft"/>
-            <field name="act_to" ref="confirmed"/>
-            <field name="condition">seats &gt; 50</field>
-        </record> -->
     </data>
 </openerp>

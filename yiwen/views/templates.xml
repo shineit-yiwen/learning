@@ -9,12 +9,7 @@
             <field name="arch" type="xml">
                 <form string="Course Form">
 				<header>
-<!--     				<button name="do_toggle_done" type="object"
-    				 string="Status button" class="oe_highlight"></button>
-    				 <field name="state" widget="statusbar" statusbar_visible="draft,confirm">
-    				 	
-    				 </field> -->
-    				 <button name="action_draft" type="object"
+    				<button name="action_draft" type="object"
                                 string="Reset to draft"
                                 states="confirmed,done"/>
                     <button name="action_confirm" type="object"
@@ -47,6 +42,17 @@
                             <field name="description" placeholder=" Plese write description"></field>
                             <field name="responsible_id"></field>
                         </group>
+
+                        <group>
+                            <field name="course_number">
+                                <tree string="Course">
+                                    <field name="material"></field>
+                                        <field name="inside"></field>
+                                        <field name="parts"></field>
+                                </tree>
+                            </field>
+                        </group>
+
                         <notebook>
                         	<page string="Main">
                         		<field name="main"></field>	
@@ -60,7 +66,6 @@
             </field>
         </record>
 
-
         <record model="ir.ui.view" id="course_tree_view">
         	<field name="name">course.tree</field>
         	<field name="model">yiwen.course</field>
@@ -72,7 +77,6 @@
         		</tree>
         	</field>
         </record>
-
 
         <record model="ir.actions.act_window" id="course_list_action">
             <field name="name">Course</field>
@@ -89,9 +93,6 @@
                     name="Courses" 
                     parent="yiwen_menu" action="course_list_action">
         </menuitem>
-
-
-
 
 <!-- school视图 -->
          <record model="ir.ui.view" id="school_search_view">
@@ -176,7 +177,6 @@
                         <field name="state" widget="statusbar"/>
                     </header>
 
-
                     <sheet>
                         <group>
                             <field name="name"></field>
@@ -223,20 +223,6 @@
         	</field>
         </record>
 
-<!-- 甘特视图 -->
-  <!--       <record model="ir.ui.view" id="session_gantt_view">
-        	<field name="name">session.gantt</field>
-        	<field name="model">yiwen.session</field>
-        	<field name="arch" type="xml">
-        		<gantt string="Session Gantt" color="course_id"
-        			 date_start="start_date" date_delay="hours"
-        			 default_group_by="instructor_id">
-        			 <field name="name"></field>
-        		</gantt>
-        	</field>
-        	
-        </record> -->
-
         <record model="ir.ui.view" id="yiwen_session_graph_view">
         	<field name="name">yiwen.session.graph</field>
 			<field name="model">yiwen.session</field>
@@ -248,7 +234,6 @@
 				</graph>
 			</field>        	
         </record>
-
 
         <record model="ir.actions.act_window" id="session_list_action">
             <field name="name">Sessions</field>
@@ -290,8 +275,5 @@
                     target="new"
                     key2="client_action_multi"
                     />
-
-
-
     </data>
 </openerp>
