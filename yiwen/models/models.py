@@ -5,7 +5,7 @@ from openerp import models, fields, api, exceptions
 
 class Course(models.Model):
 	_name = 'yiwen.course'
-	name = fields.Char(string = "Title",required = True)
+	name = fields.Char(string = "Title",required = True,translate=True)#translate=True表示字段后面的按钮点进去能看到原文
 	description = fields.Text()
 	main = fields.Text()
 	style = fields.Text()
